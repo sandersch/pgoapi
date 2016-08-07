@@ -89,10 +89,8 @@ class AuthPtc(Auth):
         ticket = None
         try:
             self.log.info('r1.json(): {}', r1.json())
+            self.log.info("r1.json()['errors']: {}): ", r1.json()['errors'])
             self.log.info('r1.history: {}'.format(r1.history))
-            self.log.info('r1.history[0]: {}'.format(r1.history[0]))
-            self.log.info('r1.history[0].headers: {}'.format(r1.history[0].headers))
-            self.log.info('Location: {}'.format(r1.history[0].headers['Location']))
             self.log.info('ticket: {}'.format(re.sub('.*ticket=', '', r1.history[0].headers['Location'])))
             ticket = re.sub('.*ticket=', '', r1.history[0].headers['Location'])
         except Exception as e:
