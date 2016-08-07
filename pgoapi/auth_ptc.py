@@ -61,9 +61,11 @@ class AuthPtc(Auth):
         
         head = {'User-Agent': 'niantic'}
         r = self._session.get(self.PTC_LOGIN_URL, headers=head)
+        self.log.info('r: {}'.format(r))
 
         try:
             jdata = json.loads(r.content.decode('utf-8'))
+            self.log.info('jdata: {}'.format(jdata))
             data = {
                 'lt': jdata['lt'],
                 'execution': jdata['execution'],
@@ -79,9 +81,12 @@ class AuthPtc(Auth):
             return False
 
         r1 = self._session.post(self.PTC_LOGIN_URL, data=data, headers=head)
+        self.log.info('r1: {}'.format(r1))
 
         ticket = None
         try:
+            self.log.info('Location: {}'.format(r1.history[0].headers['Location']))
+            self.log.info('ticket: {}'.format(re.sub('.*ticket=', '', r1.history[0].headers['Location'])))
             ticket = re.sub('.*ticket=', '', r1.history[0].headers['Location'])
         except Exception as e:
             try:
