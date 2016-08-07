@@ -80,11 +80,18 @@ class AuthPtc(Auth):
             self.log.error('PTC User Login Error - Field missing in response.content: %s', e)
             return False
 
+        self.log.info('self.PTC_LOGIN_URL: {}'.format(self.PTC_LOGIN_URL))
+        self.log.info('data: {}'.format(data))
+        self.log.info('head: {}'.format(head))
         r1 = self._session.post(self.PTC_LOGIN_URL, data=data, headers=head)
         self.log.info('r1: {}'.format(r1))
 
         ticket = None
         try:
+            self.log.info('r1.json(): {}', r1.json())
+            self.log.info('r1.history: {}'.format(r1.history))
+            self.log.info('r1.history[0]: {}'.format(r1.history[0]))
+            self.log.info('r1.history[0].headers: {}'.format(r1.history[0].headers))
             self.log.info('Location: {}'.format(r1.history[0].headers['Location']))
             self.log.info('ticket: {}'.format(re.sub('.*ticket=', '', r1.history[0].headers['Location'])))
             ticket = re.sub('.*ticket=', '', r1.history[0].headers['Location'])
